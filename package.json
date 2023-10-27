@@ -1,6 +1,6 @@
 {
   "name": "multin",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "An npx package to clone a git repo and install dependencies",
   "main": "dist/index.js",
   "repository": {
@@ -15,7 +15,8 @@
     "start": "ts-node src/index.ts",
     "build": "tsc",
     "prod": "node dist/index.js",
-    "publish:npm": "rimraf dist && npm run build && npm publish --access public"
+    "publish:npm": "rimraf dist && npm run build && npm publish --access public",
+    "format": "pnpm exec prettier . --write"
   },
   "bin": {
     "multin": "./dist/index.js"
@@ -33,9 +34,12 @@
   "devDependencies": {
     "@types/git-clone": "^0.2.2",
     "@types/inquirer": "^9.0.6",
-    "esbuild": "^0.19.5",
+    "@typescript-eslint/eslint-plugin": "^6.9.0",
+    "@typescript-eslint/parser": "^6.9.0",
+    "eslint": "^8.52.0",
     "rimraf": "^5.0.5",
     "ts-node": "^10.9.1",
+    "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   },
   "dependencies": {
