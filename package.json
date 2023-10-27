@@ -1,6 +1,6 @@
 {
   "name": "multin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An npx package to clone a git repo and install dependencies",
   "main": "dist/index.js",
   "repository": {
@@ -18,7 +18,7 @@
     "publish:npm": "rimraf dist && npm run build && npm publish --access public"
   },
   "bin": {
-    "multinode": "./dist/index.js"
+    "multin": "./dist/index.js"
   },
   "keywords": [
     "npx",
