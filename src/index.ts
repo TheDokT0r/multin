@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-import ora from 'ora';
+import { createSpinner } from 'nanospinner';
 import inquirer from 'inquirer';
 import clone from 'git-clone';
 import { PackageManager } from './@types/PackageManager';
@@ -45,13 +45,24 @@ const menu = async () => {
         packageManager = packageManager || manager.manager as PackageManager;
     }
 
-    ora().start('Checking input...');
+    const inputSpinner = createSpinner('Checking input...').start();
     checkInputErrors(gitUrl, projectName, packageManager);
+    inputSpinner.success({ text: 'Input checked' });
 
-    ora().start('Cloning repository...');
-    clone(gitUrl, projectName);
+    const cloningSpinner = createSpinner('Cloning repository...').start();
+    clone(gitUrl, projectName, {}, async (err) => {
+        if (err) {
+            cloningSpinner.error({ text: 'Failed to clone repository' });
+            process.exit(1);
+        }
 
-    installPackages(projectName, packageManager);
+        cloningSpinner.success({ text: 'Repository cloned' });
+        await installPackages(projectName, packageManager);
+    });
 }
 
-menu();
+console.time('time to execute');
+menu().then(() => {
+    createSpinner().success({ text: 'Done!' });
+    console.timeEnd('time to execute');
+});

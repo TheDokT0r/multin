@@ -1,26 +1,46 @@
 {
-  "name": "multinode",
-  "version": "1.0.0",
-  "description": "",
+  "name": "multin",
+  "version": "0.0.1",
+  "description": "An npx package to clone a git repo and install dependencies",
   "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheDokT0r/multinode.git"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/index.ts",
     "build": "tsc",
-    "prod": "node dist/index.js"
+    "prod": "node dist/index.js",
+    "publish:npm": "rimraf dist && npm run build && npm publish --access public"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "bin": {
+    "multinode": "./dist/index.js"
+  },
+  "keywords": [
+    "npx",
+    "git",
+    "clone",
+    "dependencies",
+    "install",
+    "microservices"
+  ],
+  "author": "boot_scrap_van",
+  "license": "GPL-3.0",
   "devDependencies": {
     "@types/git-clone": "^0.2.2",
     "@types/inquirer": "^9.0.6",
+    "esbuild": "^0.19.5",
+    "rimraf": "^5.0.5",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   },
   "dependencies": {
     "git-clone": "^0.2.0",
     "inquirer": "^8.2.6",
-    "ora": "^5.4.1"
+    "nanospinner": "^1.1.0"
   }
 }
