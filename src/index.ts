@@ -2,14 +2,17 @@
 
 import { createSpinner } from 'nanospinner';
 import inquirer from 'inquirer';
-import clone from 'git-clone';
 import { PackageManager } from './@types/PackageManager';
 import checkInputErrors from './checkInputErrors';
 import installPackages from './installPackages';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+
+const execAsync = promisify(exec);
 
 let gitUrl = process.argv[2];
-let projectName = process.argv[3];
-let packageManager = process.argv[4] as PackageManager;
+let packageManager = process.argv[3] as PackageManager;
 
 const menu = async () => {
   if (!gitUrl) {
@@ -20,16 +23,6 @@ const menu = async () => {
     });
 
     gitUrl = gitUrl || git.url;
-  }
-
-  if (!projectName) {
-    const project = await inquirer.prompt({
-      type: 'input',
-      name: 'name',
-      message: 'Project Name: ',
-    });
-
-    projectName = projectName || project.name;
   }
 
   if (!packageManager) {
@@ -43,23 +36,32 @@ const menu = async () => {
     packageManager = packageManager || (manager.manager as PackageManager);
   }
 
+  console.time('time to execute');
   const inputSpinner = createSpinner('Checking input...').start();
-  checkInputErrors(gitUrl, projectName, packageManager);
+  checkInputErrors(gitUrl, packageManager);
   inputSpinner.success({ text: 'Input checked' });
 
   const cloningSpinner = createSpinner('Cloning repository...').start();
-  clone(gitUrl, projectName, {}, async (err) => {
-    if (err) {
-      cloningSpinner.error({ text: 'Failed to clone repository' });
-      process.exit(1);
-    }
 
-    cloningSpinner.success({ text: 'Repository cloned' });
-    await installPackages(projectName, packageManager);
-  });
+  try {
+    await execAsync(`git clone ${gitUrl}`);
+  } catch (err) {
+    cloningSpinner.error({ text: 'Failed to clone repository' });
+    process.exit(1);
+  }
+
+  cloningSpinner.success({ text: 'Repository cloned' });
+
+  const repoName = gitUrl.split('/').pop()?.split('.')[0];
+
+  if (!repoName) {
+    throw new Error('Failed to get repository name');
+  }
+
+  await installPackages(repoName, packageManager);
 };
 
-console.time('time to execute');
+
 menu().then(() => {
   createSpinner().success({ text: 'Done!' });
   console.timeEnd('time to execute');

@@ -1,6 +1,6 @@
 {
   "name": "multin",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "An npx package to clone a git repo and install dependencies",
   "main": "dist/index.js",
   "repository": {
@@ -33,17 +33,17 @@
   "license": "GPL-3.0",
   "devDependencies": {
     "@types/git-clone": "^0.2.2",
+    "@types/git-repo-name": "^1.0.3",
     "@types/inquirer": "^9.0.6",
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^6.9.0",
     "eslint": "^8.52.0",
+    "prettier": "^3.0.3",
     "rimraf": "^5.0.5",
     "ts-node": "^10.9.1",
-    "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "git-clone": "^0.2.0",
     "inquirer": "^8.2.6",
     "nanospinner": "^1.1.0"
   }

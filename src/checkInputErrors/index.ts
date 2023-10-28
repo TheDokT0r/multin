@@ -11,11 +11,9 @@ const allPackageManagers = ['npm', 'pnpm', 'yarn'];
  */
 export default (
   gitUrl: string,
-  outDirName: string,
   packageManager: PackageManager,
 ) => {
   isGitValid(gitUrl);
-  isOutDirNameValid(outDirName);
   isPackageManagerValid(packageManager);
 };
 
@@ -31,14 +29,6 @@ const isGitValid = (gitUrl: string) => {
   // if (!gitUrlRegex.test(gitUrl)) {
   //     throw new Error('Invalid Git URL.');
   // }
-};
-
-const isOutDirNameValid = (outDirName: string) => {
-  if (!outDirName) throw new Error('Output directory name is required.');
-  const outDirNameRegex = /^[a-zA-Z0-9_-]+$/;
-  if (!outDirNameRegex.test(outDirName)) {
-    throw new Error('Invalid output directory name.');
-  }
 };
 
 const isPackageManagerValid = (packageManager: PackageManager) => {

@@ -15,10 +15,10 @@ Multin is a simple tool that allows you to clone a node git repo and install its
 ## Usage
 
 ```bash
-npx multin <repo-url> <project-name> <package-manager>
+npx multin <repo-url> <package-manager>
 ```
 
-you can also use multin without providing any arguments, in which case it will prompt you for the repo url, project name and package manager.
+you can also use multin without providing any arguments, in which case it will prompt you for the repo url and package manager.
 
 ```bash
 npx multin

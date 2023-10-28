@@ -7,15 +7,15 @@ import { createSpinner } from 'nanospinner';
 
 const execAsync = promisify(exec);
 
-export default async (rootDirName: string, packagerManager: PackageManager) => {
+export default async (repoName:string, packagerManager: PackageManager) => {
   const rootDir = process.cwd();
 
-  if (fs.existsSync(path.join(rootDir, rootDirName, 'package.json'))) {
+  if (fs.existsSync(path.join(rootDir, 'package.json'))) {
     const spinner = createSpinner(
-      `Installing dependencies for ${rootDirName}...`,
+      `Installing dependencies for ${repoName}...`,
     ).start();
-    const { stdout, stderr } = await execAsync(`${packagerManager} install`, {
-      cwd: path.join(rootDir, rootDirName),
+    await execAsync(`${packagerManager} install`, {
+      cwd: path.join(rootDir, repoName),
     });
     // console.log(`stdout: ${stdout}`);
 
@@ -24,17 +24,17 @@ export default async (rootDirName: string, packagerManager: PackageManager) => {
     //     console.error(`stderr: ${stderr}`);
     // }
 
-    spinner.success({ text: `Dependencies installed for ${rootDirName}` });
+    spinner.success({ text: `Dependencies installed for ${repoName}` });
   }
 
   const subdirectories = fs
-    .readdirSync(rootDirName, { withFileTypes: true })
+    .readdirSync(repoName, { withFileTypes: true })
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => dirent.name);
 
   for (const subdirectory of subdirectories) {
     const packageJsonPath = path.join(
-      rootDirName,
+      repoName,
       subdirectory,
       'package.json',
     );
@@ -43,8 +43,8 @@ export default async (rootDirName: string, packagerManager: PackageManager) => {
       const spinner = createSpinner(
         `Installing dependencies for ${subdirectory}...`,
       ).start();
-      const { stdout, stderr } = await execAsync(`${packagerManager} install`, {
-        cwd: path.join(rootDir, rootDirName, subdirectory),
+      await execAsync(`${packagerManager} install`, {
+        cwd: path.join(rootDir, repoName, subdirectory),
       });
       // console.log(`stdout: ${stdout}`);
 
