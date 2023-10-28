@@ -1,6 +1,6 @@
 {
   "name": "multin",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "An npx package to clone a git repo and install dependencies",
   "main": "dist/index.js",
   "repository": {
